@@ -2,7 +2,6 @@
 
 from bs4 import BeautifulSoup
 import urllib2
-import re
 
 def create_soup(url):
 	'Create BeautifulSoup object from URL'
