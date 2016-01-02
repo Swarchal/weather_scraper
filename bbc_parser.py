@@ -2,6 +2,8 @@
 
 from bs4 import BeautifulSoup
 import urllib2
+from datetime import datetime
+import time
 
 def create_soup(url):
 	'Create BeautifulSoup object from URL'
@@ -26,22 +28,22 @@ def get_temp(soup_obj):
 
 
 
-def get_time(soup_obj):
-	'Extract time from BBC weather page current observations'
+def get_datetime(soup_obj):
+	'Extract datetime from BBC weather page current observations'
 	observations = soup_obj.find_all('', class_= 'observations module')
 	for found in observations:
 		time_string = found.find_all('', class_ = 'time')
-
-	time = str(time_string)[len('<span class="time">') + 1 :-len('<\\span>') - 1]
-	return time
-
-
-
-def get_date(soup_obj):
-	'Extract date from BBC weather current observations'
-	observations = soup_obj.find_all('', class_= 'observations module')
-	for found in observations:
 		timestamp_str = str(found.find_all('', class_= 'timestamp'))
 
-	date = timestamp_str[timestamp_str.find(',')+1:timestamp_str.find('</p>')]
-	return date.strip()
+	time_ = str(time_string)[len('<span class="time">') + 1 :-len('<\\span>') - 1]
+	time_pre = time_ + ':00'
+	time_out = datetime.time(datetime.strptime(time_pre, '%X'))
+
+	year = int(time.strftime("%Y"))
+	date_ws = timestamp_str[timestamp_str.find(',')+1:timestamp_str.find('</p>')]
+	date_pre = date_ws.strip()
+	date_out = datetime.strptime(date_pre, '%A %d %B')
+	date = datetime.date(date_out.replace(year = year))
+	date_time = datetime.combine(date, time_out)
+	return date_time
+
