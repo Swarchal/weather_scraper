@@ -28,4 +28,4 @@ while True:
 	con.close()
 	print ' - Entry added for', datetime
 
-	time.sleep(360.0 - ((time.time() - start_time) % 360.0))
+	time.sleep(3600.0 - ((time.time() - start_time) % 3600.0))
