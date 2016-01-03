@@ -19,3 +19,6 @@ c.execute('''
     	weather TEXT,
     	pressure REAL)
 ''')
+
+con.commit()
+con.close()
